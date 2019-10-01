@@ -1,0 +1,630 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Pr&aacute;ctica 4: Convoluci&oacute;n y correlaci&oacute;n</title><meta name="generator" content="MATLAB 9.3"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2019-10-01"><meta name="DC.source" content="P04.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Pr&aacute;ctica 4: Convoluci&oacute;n y correlaci&oacute;n</h1><!--introduction--><div><ul><li>Cruz Meneses Jorge Angel</li><li>Gonz&aacute;lez Jim&eacute;nez Daniel</li><li>Lazcano Saavedra Miguel Salom&oacute;n</li><li>Rivera Ortiz Ra&uacute;l Alejandro</li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Objetivos</a></li><li><a href="#2">Introducci&oacute;n</a></li><li><a href="#9">Desarrollo</a></li><li><a href="#22">Anexos</a></li></ul></div><h2 id="1">Objetivos</h2><div><ul><li>Conocer m&eacute;todos b&aacute;sicos de integraci&oacute;n num&eacute;rica</li><li>Manipulaci&oacute;n de instrucciones en MATLAB</li><li>Simular convoluciones y correlaciones de se&ntilde;ales continuas</li></ul></div><h2 id="2">Introducci&oacute;n</h2><p>Los metodos numericos constituyen tecnicas mediante la cuales es posible formular problemas matematicos, de tal manera que puedan resolverse utilizando operaciones aritmeticas.</p><div><ul><li><b>Teorema fundamental del calculo</b></li></ul></div><p><img vspace="5" hspace="5" src="I1.png" alt=""> </p><p>Si tenemos:</p><div><ul><li>Una funci&oacute;n integrable</li></ul></div><div><ul><li><img src="P04_eq05632433902691391826.png" alt="$$\frac{d}{dx}f(x)=f(x)$" style="width:94px;height:30px;">  , resulta ser que</li></ul></div><p>Encontrar F es dificil, para esto u tilizamos tecnicas de integraci&oacute;n como cambio de variable, integraci&oacute;n por partes, susituci&oacute;n trigonometrica, etc.</p><p>Ejemplo:</p><p><img src="P04_eq14260462621779918830.png" alt="$f(x) = e^{-x^2}$" style="width:72px;height:18px;"></p><p><img src="P04_eq00329903796873784551.png" alt="$\int_{-1}^{1}f(x)dx =\int_{-1}^{1}e^{-x^2}dx = F(1)-F(1)$" style="width:249px;height:20px;"></p><p>Esta antiderivada no existe, por lo que tenemos que hacerlo por otro camino</p><p>Nos aproximamos por un polinomio, tal que evaluando el polinomio o la funcion original sea casi la misma altura, de este modo si integramos el polinomio nos aproximaremos a lo mismo que integrando la funcion.</p><p>Tomemos un polinomio constante: <img src="P04_eq06826485403852042822.png" alt="$$P(x)=1$" style="width:57px;height:15px;"></p><p><img src="P04_eq13896016841148121677.png" alt="$$\int_{-1}^{1}P(x)dx =\int_{-1}^{1}dx= 2$" style="width:158px;height:37px;"></p><p>Entonces tenemos:</p><p><img src="P04_eq13677431631586508056.png" alt="$$\int_{-1}^{1}e^{-x^2}dx<2$" style="width:92px;height:37px;"></p><p><img src="P04_eq18015301336306333426.png" alt="$$\int_{-1}^{1}e^{-x^2}dx\approx 1.5$" style="width:103px;height:37px;"></p><p>Al ver las graficas de las funciones:</p><pre class="codeinput">x =-2:0.01:2;
+y1= @(x) exp(-x.^2).*(x&gt;=-1 &amp; x&lt;1);
+y2= @(x)1.*(x&gt;-1 &amp; x&lt;1);
+plot(x,y1(x),<span class="string">'r'</span>,x,y2(x),<span class="string">'b--'</span>);
+grid <span class="string">on</span>;
+axis([-1.5 1.5 -.5 1.5]);
+</pre><img vspace="5" hspace="5" src="P04_01.png" alt=""> <div><ul><li><b>REGLA DEL TRAPECIO (n = 1)</b></li></ul></div><p>Esta se utiliza para un polinomio de grado 1, es decir que aproximamos nuestra &aacute;rea bajo la curva mediante la siguiente f&oacute;rmula :</p><p><img src="P04_eq11247663205127197047.png" alt="$$\int_{a}^{b}f(x)dx = \frac{h}{2}[f(x_0)+f(x_1)] - \frac{h^{3}}{12} * f^{\prime{\prime}}(\xi)$$" style="width:275px;height:37px;"></p><p>donde:</p><p><img src="P04_eq07751439782284531561.png" alt="$$ \xi \in (a<x<b)$$" style="width:97px;height:15px;"></p><p><img src="P04_eq02557170248208827746.png" alt="$$ x_0 = a $$" style="width:42px;height:10px;"></p><p><img src="P04_eq07004977681278007776.png" alt="$$ x_1 = b $$" style="width:40px;height:13px;"></p><p><img src="P04_eq09767507722181034496.png" alt="$$ h = b-a $$" style="width:59px;height:11px;"> (el paso)</p><p><img src="P04_eq16701723380698095660.png" alt="$$ x_i = x_0 + i*h $$" style="width:92px;height:13px;"></p><p>Tambi&eacute;n podemos ver que el "error" que le restamos a la f&oacute;rmula es:</p><p><img src="P04_eq07636123821565817789.png" alt="$$\frac{h^{3}}{12} * f^{\prime{\prime}}(\xi)$$" style="width:63px;height:33px;"></p><p>Entonces si tenemos un polinomio de grado 1, su segunda derivada evaluada en cualquier punto en el intervalo</p><p><img src="P04_eq07751439782284531561.png" alt="$$ \xi \in (a<x<b)$$" style="width:97px;height:15px;"></p><p>ser&aacute; 0. Por lo tanto el error en este caso ser&aacute; 0.</p><p>Entonces, en conclusi&oacute;n las se&ntilde;ales con polinomios de grado 1 no tendr&aacute;n "error". Pero si comenzamos a dar funciones o se&ntilde;ales con curvas mucho m&aacute;s marcadas o que el polinomio sea cada vez m&aacute;s grande (en grado) tendremos un mayor error en la aproximaci&oacute;n.</p><div><ul><li><b>REGLA DE SIMPSON (n = 2)</b></li></ul></div><p>En este caso tendremos 3 puntos : Comenzamos con en primer punto <img src="P04_eq09618393932189446995.png" alt="$$a$" style="width:7px;height:7px;">. Despues tendremos el segundo que ser&iacute;a <img src="P04_eq09425414315013234887.png" alt="$$b$" style="width:6px;height:11px;"> y al final un tercer punto que en este caso es <img src="P04_eq14572903151674924942.png" alt="$$h$" style="width:8px;height:11px;"></p><p><img vspace="5" hspace="5" src="Simpson1.PNG" alt=""> </p><p><img vspace="5" hspace="5" src="Simpson2.PNG" alt=""> </p><p><img src="P04_eq08545149179868291376.png" alt="$$ \xi \in (x_0<x<x_2) $$" style="width:111px;height:15px;"></p><p><img src="P04_eq02557170248208827746.png" alt="$$ x_0 = a $$" style="width:42px;height:10px;"></p><p><img src="P04_eq05854289390357220555.png" alt="$$ x_2 = b $$" style="width:40px;height:13px;"></p><p><img src="P04_eq00897554778754961613.png" alt="$$ h = \frac{b-a}{2} $$" style="width:61px;height:30px;"> (el paso)</p><p><img src="P04_eq01146491814580695966.png" alt="$$ x_1 = \frac{b+a}{2} $$" style="width:68px;height:30px;"></p><p><img src="P04_eq10588196022261915792.png" alt="$$ x_i = a + i*h $$" style="width:85px;height:13px;"></p><p>Tambi&eacute;n podemos ver que el "error" que le restamos a la f&oacute;rmula es:</p><p><img src="P04_eq02427527213013924245.png" alt="$$\frac{h^{5}}{90} * f^{(4)}(\xi)$$" style="width:70px;height:33px;"></p><p>Es decir, que nuestro error depende de la cuarta derivada de la funci&oacute;n y de el valor de el paso en nuestra aproximaci&oacute;n.</p><div><ul><li><b>REGLA DE LOS 3 OCTAVOS DE SIMPSON (n = 3)</b></li></ul></div><p>En este caso tendremos 4 puntos en la evaluaci&oacute;n de la funci&oacute;n o de la se&ntilde;al. La f&oacute;rmula de la regla de los 3 octavos de simpson est&aacute; dada por:</p><p><img src="P04_eq16976740776705682832.png" alt="$$   \int_{x_0}^{x_3}f(x)dx = \frac{3h}{8}[f(x_0)+3f(x_1)+3f(x_2)+f(x_3)] - \frac{3h^{5}}{80} * f^{(4)}(\xi)$$" style="width:422px;height:38px;"></p><p>donde:</p><p><img src="P04_eq13678555103003000573.png" alt="$$ \xi \in (x_0<x<x_3) $$" style="width:111px;height:15px;"></p><p><img src="P04_eq02557170248208827746.png" alt="$$ x_0 = a $$" style="width:42px;height:10px;"></p><p><img src="P04_eq11126914353119655313.png" alt="$$ x_3 = b $$" style="width:40px;height:13px;"></p><p><img src="P04_eq12510699083115350097.png" alt="$$ h = \frac{b-a}{3} $$" style="width:61px;height:30px;"></p><p><img src="P04_eq15966912681592679133.png" alt="$$ x_1 = \frac{2a+b}{3} $$" style="width:75px;height:30px;"></p><p><img src="P04_eq16481054722281057790.png" alt="$$ x_2 = \frac{2b+a}{3} $$" style="width:75px;height:30px;"></p><p><img src="P04_eq16395343070205388151.png" alt="$$ x_i = a+ i(\frac{b-a}{3}) $$" style="width:108px;height:30px;"></p><p>Estos puntos son los que necesitamos para hacer nuestra aproximaci&oacute;n del &aacute;rea bajo la cuerva.</p><p>El "error" en este caso esta dado por:</p><p><img src="P04_eq04468891527966240902.png" alt="$$ \frac{3h^{5}}{80} * f^{(4)}(\xi)$$" style="width:78px;height:33px;"></p><p>Es decir que el "error" en la aproximaci&oacute;n depende de la cuarta derivada de la funci&oacute;n y de el paso ( <img src="P04_eq14572903151674924942.png" alt="$$h$" style="width:8px;height:11px;"> ).</p><div><ul><li><b>REGLA COMPUESTA DEL TRAPECIO</b> Esta tiene como fianalidad de hacer la regla del trapecio, pero con un m&uacute;mero mayor de trapecios, de tal manera que el "error" sea cada vez m&aacute;s peque&ntilde;o en el inetervalo <img src="P04_eq12709233999092556974.png" alt="$$(a,b)$" style="width:30px;height:15px;"></li></ul></div><p><img src="P04_eq03675821731433780105.png" alt="$$   \int_{a}^{b}f(x)dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(x_j) +f(b)] - \frac{(b-a)h^{2}}{12} * f^{\prime{\prime}}(u)$$" style="width:390px;height:46px;"></p><p>donde:</p><p><img src="P04_eq05154791075642453995.png" alt="$$ u \in (a,b) $$" style="width:57px;height:15px;"></p><p>En este caso el "error" est&aacute; dado por:</p><p><img src="P04_eq02997436005624512251.png" alt="$$ \frac{(b-a)h^{2}}{12} * f^{\prime{\prime}}(u) $$" style="width:107px;height:33px;"></p><div><ul><li><b>REGLA COMPUESTA DE SIMPSON</b></li></ul></div><p><img src="P04_eq09667268689546911857.png" alt="$$   \int_{a}^{b}f(x)dx = \frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_ij) +4\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j-1})+f(b)] - \frac{(b-a)h^{4}}{180} * f^{(4)}(u)$$" style="width:507px;height:48px;"></p><p>donde</p><p><img src="P04_eq10772262416879965305.png" alt="$$  u \in (a,b) $$" style="width:57px;height:15px;"></p><div><ul><li><b>Cuadratura Gaussiana</b></li></ul></div><p><img vspace="5" hspace="5" src="Gau2.PNG" alt=""> </p><p>Las formulas anteriores aproximan la integral con las evaluaciones de la funcion en determinados puntos por determinadas constantes, por lo que son formulas de cuadratura.</p><p>Asi como se utilizaba en el metodo de la regla de simpson compuesta y la regla del trapecio, los cuales utilizan polinomios de lagrange, es decir, buscar cual es el polimonio mas grande que se puede encontrar para aproximarme a un grado de presicion. Sin embargo en este metodo utilizaremos <b>polinomios de Legendre</b></p><p>Aqui podemos observar los primeros 5 polinomios de legendre y sus respectivsa graficas en el intervalo de -1 a 1</p><p><img vspace="5" hspace="5" src="Gau.png" alt=""> </p><p><img vspace="5" hspace="5" src="Gau1.png" alt=""> </p><div><ul><li>Si Pn es un polinomio de Legendre de grado n entonces sus raices son numeros reales</li></ul></div><p><img vspace="5" hspace="5" src="Gau3.PNG" alt=""> </p><pre>Por lo que sabemos que</pre><p><img vspace="5" hspace="5" src="Gau4.PNG" alt=""> </p><p>Asi como se aplic&oacute; en simpson y en trapecio,que sabemos que tienen presicion definida, como lo es el 3 en la regla de simpson y el 1 en el trapecio. Es decir, que si la funcion es de grado 3 o 1 respectivamente, la funcion deja de aproximarse y se convierte exactamente en la funcion, sin grado de error. Se aplica la misma logica con la cuadratura Gaussiana</p><p><img vspace="5" hspace="5" src="Gau5.PNG" alt=""> </p><p>Sin embargo no tenemos un margen de error, por lo que se cuenta con tablas con las que cuentan ya con valores predertminados con las que tenemos que evaluar nuestra funcion para asi poderlas aproximar dependiendo el grado de la funcion.</p><p>Por ultimo ya contamos con la fucion en -1 a 1, sin embargo no siempre se busca ingtegrar en dicho ontervalo, por lo que haciendo un cambio de variable nos arroja esta dicha formula generica.</p><p><img vspace="5" hspace="5" src="Gau6.PNG" alt=""> </p><h2 id="9">Desarrollo</h2><p>A continuaci&oacute;n, se presentan una serie de problemas de la Parte 2 del Curso de Se&ntilde;ales y Sistemas, los cuales se les da resoluci&oacute;n mediante c&oacute;digo de MATLAB&reg; y comprobamos con resultados obtenidos previamente.</p><div><ul><li><b>Problema 1</b></li></ul></div><div><ol><li>Para el PR04 reporte la grafica de la simulacion numerica de la convolucion y compare con el resultado analitico que obtuvo para el problema 1.</li></ol></div><p>Realiza la convolucion de las siguientes se&ntilde;ales:</p><p><img vspace="5" hspace="5" src="g1.png" alt=""> </p><p><img vspace="5" hspace="5" src="h1.png" alt=""> </p><pre class="codeinput">g = @(t) (1-t).*(t&gt;=0 &amp; t&lt;1)+(t-1).*(t&gt;=1&amp;t&lt;2); <span class="comment">%Funcion fija</span>
+h = @(t) (1).*(t&gt;=0&amp;t&lt;1);<span class="comment">%Funcion movil</span>
+graficas(g,h,-1,3,-.5,1.5);
+</pre><img vspace="5" hspace="5" src="P04_02.png" alt=""> <p>Ambas funciones se pueden visualizar en las primeras graficas que se muestran despues del codigo ejecutable.</p><pre class="language-matlab">g = @(t) (1-t).*(t&gt;=0 &amp; t&lt;1)+(t-1).*(t&gt;=1&amp;t&lt;2); <span class="comment">%Funcion Fija</span>
+h = @(t) (1).*(t&gt;=0&amp;t&lt;1); <span class="comment">%Funcion movil</span>
+hg = @(t) (((-(t.^2)./2)+t).*(t&gt;=0 &amp; t&lt;1) + ((t.^2)-(3.*t)+(5/2)).*(t&gt;=1 &amp; t&lt;2) + ((-(t.^2)/2)+(2.*t)-(3/2)).*(t&gt;=2 &amp; t&lt;3));
+convconm(g,h,hg,-1,4,-.5,1.5)
+</pre><p>La variable h representa la primer funcion, mientras que la g es otra funcion, estas dos funciones son las que van a realizar la convolucion, mientras que la funcion hg es la solucion analitica de la convolucion h(t)*g(t).</p><p><img vspace="5" hspace="5" src="A1.gif" alt=""> </p><p>Donde la solucion analitica de la convolucion una vez hecho las integrales de cada caso son es la siguiente:</p><p><img vspace="5" hspace="5" src="hg1.png" alt=""> </p><div><ul><li><b>Problema 2</b></li></ul></div><div><ol><li>Para el PR04 reporte la grafica de la simulacion numerica de la convolucion y compare con el resultado analitico que obtuvo para el problema 3.</li></ol></div><p>Realiza la convolucion de las siguientes se&ntilde;ales:</p><p><img vspace="5" hspace="5" src="g2.png" alt=""> </p><p><img vspace="5" hspace="5" src="h2.png" alt=""> </p><pre class="codeinput">g = @(t) (t).*(t&gt;=0 &amp; t&lt;1)+(1).*(t&gt;=1&amp;t&lt;2); <span class="comment">%Funcion fija</span>
+h = @(t) (1).*(t&gt;=1 &amp; t&lt;3);<span class="comment">%Funcion movil</span>
+graficas(g,h,-1,3.5,-.5,1.5);
+</pre><img vspace="5" hspace="5" src="P04_03.png" alt=""> <p>Ambas funciones se pueden visualizar en las graficas anteriores.</p><pre class="language-matlab">g = @(t) (t).*(t&gt;=0 &amp; t&lt;1)+(1).*(t&gt;=1&amp;t&lt;2); <span class="comment">%Funcion fija</span>
+h = @(t) (1).*(t&gt;=1 &amp; t&lt;3);<span class="comment">%Funcion movil</span>
+hg = @(t) (((t.^2)./2)-t+1/2).*(t&gt;=1 &amp; t&lt;2) + (t-3/2).*(t&gt;=2 &amp; t&lt;3) + ((-(t.^2)/2)+(3.*t)-3).*(t&gt;=3 &amp; t&lt;4) + (-t+5).*(t&gt;=4 &amp; t&lt;5);
+convconm(g,h,hg,-1,5.5,-.5,2)
+</pre><p>La variable h representa la primer funcion, mientras que la g es otra funcion, estas dos funciones son las que van a realizar la convolucion, mientras que la funcion hg es la solucion analitica de la convolucion h(t)*g(t).</p><p><img vspace="5" hspace="5" src="A2.gif" alt=""> </p><p>Donde la solucion analitica de la convolucion una vez resuelta es la siguiente:</p><p><img vspace="5" hspace="5" src="hg2.png" alt=""> </p><div><ul><li><b>Problema 3</b></li></ul></div><div><ol><li>Para el PR06 reporte la grafica de la simulacion numerica de la convolucion y compare con el resultado analitico que obtuvo para el problema e).</li></ol></div><p>Realiza la autocorrelacion de:</p><p><img vspace="5" hspace="5" src="x3.png" alt=""> </p><p>Tenemos por definicion que:</p><p><img vspace="5" hspace="5" src="Autocorrelacion3.png" alt=""> </p><p>Por lo que las funcion <img src="P04_eq07030163115589442448.png" alt="$X_1(t)=g(t)$" style="width:62px;height:12px;"> (funcion fija) y <img src="P04_eq11338286938841681018.png" alt="$X_1(-t)=h(t)$" style="width:72px;height:12px;"> (funcion movil) quedan de la siguiente forma:d</p><p><img vspace="5" hspace="5" src="g3.png" alt=""> </p><p><img vspace="5" hspace="5" src="h3.png" alt=""> </p><pre class="codeinput">g = @(t) 1.*(t&gt;=0 &amp; t&lt;3)-1.*(t&gt;=3&amp;t&lt;4);<span class="comment">%Funcion fija</span>
+h = @(t) -1.*(t&gt;=-4&amp;t&lt;-3)+1.*(t&gt;=-3&amp;t&lt;0);<span class="comment">%Funcion movil</span>
+graficas(g,h,-4.5,4.5,-1.5,1.5);
+</pre><img vspace="5" hspace="5" src="P04_04.png" alt=""> <p>Ambas funciones se pueden visualizar en las primeras graficas que se muestran despues del codigo ejecutable.</p><pre class="language-matlab">g = @(t) 1.*(t&gt;=0 &amp; t&lt;3)-1.*(t&gt;=3&amp;t&lt;4);<span class="comment">%Funcion fija</span>
+h = @(t) -1.*(t&gt;=-4&amp;t&lt;-3)+1.*(t&gt;=-3&amp;t&lt;0);<span class="comment">%Funcion movil</span>
+hg = @(t) (-t-4).*(t&gt;=-4 &amp; t&lt;-3) + (t+2).*(t&gt;=-3 &amp; t&lt;-1) + (3*t+4).*(t&gt;=-1 &amp; t&lt;0) + (-3*t+4).*(t&gt;=0 &amp; t&lt;1) + (-t+2).*(t&gt;=1 &amp; t&lt;3) + (t-4).*(t&gt;=3 &amp; t&lt;4);
+convconm(g,h,hg,-4.5,4.5,-1.5,4.5)
+</pre><p>La variable g representa la primer funcion la cual va a ser la funcion, fija mientras que la h es otra funcion, estas dos funciones son las que van a realizar la convolucion, mientras que la funcion hg es la solucion analitica de la autocorrelacion de <img src="P04_eq02015484715776175303.png" alt="$T_{X_1X_1}$" style="width:27px;height:11px;"></p><p><img vspace="5" hspace="5" src="A3.gif" alt=""> </p><p>Donde la solucion analitica de la autocorrelacion de <img src="P04_eq07862914750616374602.png" alt="$X_1$" style="width:14px;height:10px;">, la cual es lo mismo que la convolucion de g(t)*h(t). La solucion analitica quedo de la siguiente forma:</p><p><img vspace="5" hspace="5" src="hg3.png" alt=""> </p><div><ul><li><b>Problema 4</b></li></ul></div><div><ol><li>Para el PR06 reporte la grafica de la simulacion numerica de la convolucion y compare con el resultado analitico que obtuvo para el problema f).</li></ol></div><p>Realiza la correlacion de <img src="P04_eq07739924221448454531.png" alt="$T_{X_0X_1}$" style="width:27px;height:12px;">:</p><p><img vspace="5" hspace="5" src="x41.png" alt=""> </p><p><img vspace="5" hspace="5" src="x42.png" alt=""> </p><p>Tenemos por definicion que:</p><p><img vspace="5" hspace="5" src="Correlacion4.png" alt=""> </p><p>Por lo que las funcion <img src="P04_eq15183226189121529521.png" alt="$X_0(t)=h(t)$" style="width:62px;height:12px;"> (funcion fija) y <img src="P04_eq07030163115589442448.png" alt="$X_1(t)=g(t)$" style="width:62px;height:12px;"> (funcion movil) quedan de la siguiente forma:d</p><p><img vspace="5" hspace="5" src="g4.png" alt=""> </p><p><img vspace="5" hspace="5" src="h4.png" alt=""> </p><pre class="codeinput">g = @(t) 1.*(t&gt;=0 &amp; t&lt;2)-1.*(t&gt;=2&amp;t&lt;4);<span class="comment">%Funcion fija</span>
+h = @(t) -1.*(t&gt;=-4&amp;t&lt;-3)+1.*(t&gt;=-3&amp;t&lt;0);<span class="comment">%Funcion movil</span>
+graficas(g,h,-4.5,4.5,-1.5,1.5);
+</pre><img vspace="5" hspace="5" src="P04_05.png" alt=""> <p>Ambas funciones se pueden visualizar en las graficas anteriores.</p><pre class="language-matlab">g = @(t) 1.*(t&gt;=0 &amp; t&lt;2)-1.*(t&gt;=2&amp;t&lt;4);<span class="comment">%Funcion fija</span>
+h = @(t) -1.*(t&gt;=-4&amp;t&lt;-3)+1.*(t&gt;=-3&amp;t&lt;0);<span class="comment">%Funcion movil</span>
+hg = @(t) (-t-4).*(t&gt;=-4 &amp; t&lt;-3) + (t+2).*(t&gt;=-3 &amp; t&lt;-2) + (3*t+6).*(t&gt;=-2 &amp; t&lt;-1) + (-t+2).*(t&gt;=-1 &amp; t&lt;0) + (-3*t+2).*(t&gt;=0 &amp; t&lt;1) + (-t).*(t&gt;=1 &amp; t&lt;2) + (t-4).*(t&gt;=2 &amp; t&lt;4);
+convconm(g,h,hg,-4.5,4.5,-2.5,3.5)
+</pre><p>La variable g representa la primer funcion, la cual va a ser la funcion fija mientras que la h es la otra funcion, la cual va a ser la funcion movil, estas dos funciones son las que van a realizar la convolucion, mientras que la funcion hg es la solucion analitica de la correlacion de <img src="P04_eq07739924221448454531.png" alt="$T_{X_0X_1}$" style="width:27px;height:12px;"></p><p><img vspace="5" hspace="5" src="A4.gif" alt=""> </p><p>Donde la solucion analitica de la correlacion de <img src="P04_eq07739924221448454531.png" alt="$T_{X_0X_1}$" style="width:27px;height:12px;">, la cual es lo mismo que la convolucion de g(t)*h(t). La solucion analitica quedo de la siguiente forma:</p><p><img vspace="5" hspace="5" src="hg4.png" alt=""> </p><h2 id="22">Anexos</h2><p>Funcion para realizar convoluciones.</p><pre class="language-matlab">
+  <span class="keyword">function</span> convconm(g,h,hx,p1,p2,ymin,ymax)
+  filename = <span class="string">'Animaciones.gif'</span>;
+  v = figure; <span class="comment">% Se crea una figura para hacer las gr&aacute;ficas</span>
+  axis <span class="string">tight</span> <span class="string">manual</span> <span class="comment">% this ensures that getframe() returns a consistent size</span>
+  dtau = 0.005; <span class="comment">% Base de los rectangulos para realizar la integral </span>
+  tau = p1:dtau:p2; <span class="comment">% Intervalo de visualizaci&oacute;n del resultado (Depende de la convolucion)</span>
+  ti = 0; <span class="comment">% Indice para el vector de resultados</span>
+  tvec = p1:.1:p2; <span class="comment">% traslaciones de t, cuantas integrales se calulan (Depende de la convolucion) </span>
+  y = NaN*zeros(1, length (tvec)); <span class="comment">% Resultados de acuerdo a cuantos t (no se mueve)</span>
+  
+  <span class="keyword">for</span> t = tvec <span class="comment">% Cantidad de traslaciones</span>
+      ti = ti+1; <span class="comment">% Indice para guardar el resultado (indice del tiempo)</span>
+      xh = h(t-tau).*g(tau); <span class="comment">% resultado de la multiplicaci&oacute;n (no se mueve)</span>
+      lxh = length(xh); <span class="comment">% longitud del resultado</span>
+      y(ti) = sum(xh.*dtau); <span class="comment">% Base por altura, aproximaci&oacute;n de la integral</span>
+      <span class="comment">%%Ediciones de la grafica</span>
+      
+      subplot (2,1,1), <span class="comment">% gr&aacute;fica de 2 x 1 (primera)</span>
+      plot(tau, g(tau), <span class="string">'r-'</span>, tau, h(t-tau), <span class="string">'b--'</span>, t, 0, <span class="string">'ok'</span>); <span class="comment">%graficas </span>
+      axis ([tau(1) tau(end) ymin ymax]); <span class="comment">% l&iacute;mites de los ejes</span>
+      grid <span class="string">on</span>; <span class="comment">% malla</span>
+      patch([tau(1:end-1); tau(1:end-1); tau(2:end); tau(2:end)],<span class="keyword">...</span>
+      [zeros(1,lxh-1);xh(1:end-1);xh(2:end);zeros(1,lxh-1)],<span class="keyword">...</span>
+      [.8 .8 .8], <span class="string">'edgecolor'</span>, <span class="string">'none'</span>);
+      xlabel(<span class="string">'\tau'</span>); <span class="comment">% Texto del eje X</span>
+      legend(<span class="string">'g(\tau)'</span>, <span class="string">'h(t-\tau)'</span>,<span class="string">'t'</span>,<span class="string">'h(\tau)g(t-\tau)'</span>)<span class="comment">% Caja de Texto  </span>
+      subplot (2, 1, 2)  <span class="comment">% gr&aacute;fica de 2 x 1 (segunda)</span>
+      plot (tau, hx(tau), <span class="string">'r'</span>, tvec, y, <span class="string">'k'</span>, tvec (ti), y(ti), <span class="string">'ok'</span>); <span class="comment">%% Bolitas en la grafica</span>
+      legend(<span class="string">'Analitico'</span>,<span class="string">'Convolucion'</span>);
+      xlabel (<span class="string">'t'</span>); 
+      ylabel (<span class="string">'y(t) = \int h(\tau)x(t-\tau) d\tau'</span>);
+      axis ([tau(1) tau(end) ymin ymax]); <span class="comment">% l&iacute;mites del eje</span>
+      grid <span class="string">on</span>; <span class="comment">% malla</span>
+      drawnow; <span class="comment">% efecto de movimiento continuo</span>
+      
+      frame = getframe(v); 
+      im = frame2im(frame); 
+      [imind,cm] = rgb2ind(im,256); 
+      <span class="comment">% Write to the GIF File </span>
+      <span class="keyword">if</span> t == p1 
+          imwrite(imind,cm,filename,<span class="string">'gif'</span>, <span class="string">'Loopcount'</span>,inf); 
+      <span class="keyword">else</span> 
+          imwrite(imind,cm,filename,<span class="string">'gif'</span>,<span class="string">'WriteMode'</span>,<span class="string">'append'</span>); 
+      <span class="keyword">end</span> 
+  <span class="keyword">end</span>
+  <span class="keyword">end</span>
+
+</pre><p>Los parametros representan:</p><div><ul><li>g: Es la funcion fija de la convolucion.</li><li>h: Es la funcion movil de la convolucion.</li><li>hx: Es el resultado analitico que se obtuvieroon previamente al realizar la practica, el cual se va a graficar.</li><li>p1: Es el punto limite minimo en x</li><li>p2: Es el punto limite maximo en x</li><li>ymin: Es el punto limite minimo en y</li><li>ymax: Es el punto limite maximo en x</li></ul></div><p>Funcion para realizar graficas de las funciones con las cuales se van a realizar las convoluciones.</p><pre class="language-matlab">
+<span class="keyword">function</span> graficas(g,h,p1,p2,ymin,ymax)
+
+t = p1:.005:p2;
+figure (1);
+subplot(1,2,1);
+plot(t,g(t),<span class="string">'r-'</span>);
+grid <span class="string">on</span>;
+legend(<span class="string">'Funcion fija'</span>);
+axis ([t(1) t(end) ymin ymax]);
+
+subplot(1,2,2);
+plot(t,h(t),<span class="string">'b-'</span>);
+grid <span class="string">on</span>;
+legend(<span class="string">'Funcion movil'</span>);
+axis ([t(1) t(end) ymin ymax]);
+
+
+<span class="keyword">end</span>
+
+
+</pre><div><ul><li>g: Es la funcion fija de la convolucion.</li><li>h: Es la funcion movil de la convolucion.</li><li>p1: Es el punto limte minimo en x.</li><li>p2: Es el punto limite maximo en x.</li><li>ymin: Es el punto limite minimo en y.</li><li>ymax: Es el punto limite maximo en y.</li></ul></div><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2017b</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Práctica 4: Convolución y correlación
+% * Cruz Meneses Jorge Angel
+% * González Jiménez Daniel
+% * Lazcano Saavedra Miguel Salomón
+% * Rivera Ortiz Raúl Alejandro
+%% Objetivos
+%
+% * Conocer métodos básicos de integración numérica
+% * Manipulación de instrucciones en MATLAB
+% * Simular convoluciones y correlaciones de señales continuas
+
+%% Introducción
+% Los metodos numericos constituyen tecnicas mediante la cuales es posible
+% formular problemas matematicos, de tal manera que puedan resolverse
+% utilizando operaciones aritmeticas.
+%
+% * *Teorema fundamental del calculo*
+%
+% <<I1.png>>
+%
+% Si tenemos:
+%
+% * Una función integrable 
+%
+% * $$\frac{d}{dx}f(x)=f(x)$  , resulta ser que
+% 
+% Encontrar F es dificil, para esto u tilizamos tecnicas de integración
+% como cambio de variable, integración por partes, susitución
+% trigonometrica, etc.
+%
+% Ejemplo:
+%
+% $f(x) = e^{-x^2}$
+%
+% $\int_{-1}^{1}f(x)dx =\int_{-1}^{1}e^{-x^2}dx = F(1)-F(1)$
+%
+% Esta antiderivada no existe, por lo que tenemos que hacerlo por otro
+% camino
+%
+% Nos aproximamos por un polinomio, tal que evaluando el polinomio o la funcion original
+% sea casi la misma altura, de este modo si integramos el polinomio nos
+% aproximaremos a lo mismo que integrando la funcion.
+%
+% Tomemos un polinomio constante: $$P(x)=1$ 
+%
+% $$\int_{-1}^{1}P(x)dx =\int_{-1}^{1}dx= 2$
+% 
+% Entonces tenemos:
+%
+% $$\int_{-1}^{1}e^{-x^2}dx<2$ 
+%
+% $$\int_{-1}^{1}e^{-x^2}dx\approx 1.5$
+%
+% Al ver las graficas de las funciones:
+%
+%%
+x =-2:0.01:2;
+y1= @(x) exp(-x.^2).*(x>=-1 & x<1);
+y2= @(x)1.*(x>-1 & x<1);
+plot(x,y1(x),'r',x,y2(x),'bREPLACE_WITH_DASH_DASH');
+grid on;
+axis([-1.5 1.5 -.5 1.5]);
+%%
+% * *REGLA DEL TRAPECIO (n = 1)*
+%
+% Esta se utiliza para un polinomio de grado 1, es decir que aproximamos
+% nuestra área bajo la curva mediante la siguiente fórmula : 
+%
+% $$\int_{a}^{b}f(x)dx = \frac{h}{2}[f(x_0)+f(x_1)] - \frac{h^{3}}{12} * f^{\prime{\prime}}(\xi)$$
+%
+% donde:
+%
+% $$ \xi \in (a<x<b)$$
+% 
+% $$ x_0 = a $$
+%
+% $$ x_1 = b $$
+%
+% $$ h = b-a $$ (el paso)
+%
+% $$ x_i = x_0 + i*h $$
+% 
+% También podemos ver que el "error" que le restamos a la fórmula es: 
+% 
+% $$\frac{h^{3}}{12} * f^{\prime{\prime}}(\xi)$$
+% 
+% Entonces si tenemos un polinomio de grado 1, su segunda derivada evaluada
+% en cualquier punto en el intervalo  
+%
+% $$ \xi \in (a<x<b)$$ 
+%
+% será 0.
+% Por lo tanto el error en este caso será 0.
+%
+% Entonces, en conclusión las señales con polinomios de grado 1 no tendrán "error".
+% Pero si comenzamos a dar funciones o señales con curvas mucho más
+% marcadas o que el polinomio sea cada vez más grande (en grado) tendremos
+% un mayor error en la aproximación.
+%%
+% * *REGLA DE SIMPSON (n = 2)*
+%
+% En este caso tendremos 3 puntos : Comenzamos con en primer punto $$a$. 
+% Despues tendremos el segundo que sería $$b$ y al final un tercer punto
+% que en este caso es $$h$
+%
+% <<Simpson1.PNG>> 
+%
+% <<Simpson2.PNG>>
+%
+% $$ \xi \in (x_0<x<x_2) $$
+%
+% $$ x_0 = a $$
+%
+% $$ x_2 = b $$
+%
+% $$ h = \frac{b-a}{2} $$ (el paso) 
+% 
+% $$ x_1 = \frac{b+a}{2} $$
+%
+% $$ x_i = a + i*h $$
+%
+% También podemos ver que el "error" que le restamos a la fórmula es: 
+% 
+% $$\frac{h^{5}}{90} * f^{(4)}(\xi)$$
+% 
+% Es decir, que nuestro error depende de la cuarta derivada de la función y
+% de el valor de el paso en nuestra aproximación.
+%%
+% * *REGLA DE LOS 3 OCTAVOS DE SIMPSON (n = 3)*
+%
+% En este caso tendremos 4 puntos en la evaluación de la función o de la
+% señal. La fórmula de la regla de los 3 octavos de simpson está dada por: 
+%
+% $$   \int_{x_0}^{x_3}f(x)dx = \frac{3h}{8}[f(x_0)+3f(x_1)+3f(x_2)+f(x_3)] - \frac{3h^{5}}{80} * f^{(4)}(\xi)$$
+%
+% donde: 
+%
+% $$ \xi \in (x_0<x<x_3) $$
+% 
+% $$ x_0 = a $$
+%
+% $$ x_3 = b $$
+%
+% $$ h = \frac{b-a}{3} $$
+% 
+% $$ x_1 = \frac{2a+b}{3} $$
+%
+% $$ x_2 = \frac{2b+a}{3} $$
+%
+% $$ x_i = a+ i(\frac{b-a}{3}) $$
+%
+% Estos puntos son los que necesitamos para hacer nuestra aproximación del
+% área bajo la cuerva. 
+%
+%
+% El "error" en este caso esta dado por: 
+%
+% $$ \frac{3h^{5}}{80} * f^{(4)}(\xi)$$ 
+% 
+% Es decir que el "error" en la aproximación depende de la cuarta derivada
+% de la función y de el paso ( $$h$ ).    
+%%
+% * *REGLA COMPUESTA DEL TRAPECIO*
+% Esta tiene como fianalidad de hacer la regla del trapecio, pero con un
+% múmero mayor de trapecios, de tal manera que el "error" sea cada vez más
+% pequeño en el inetervalo $$(a,b)$
+% 
+% $$   \int_{a}^{b}f(x)dx = \frac{h}{2}[f(a)+2\sum_{j=1}^{n-1}f(x_j) +f(b)] - \frac{(b-a)h^{2}}{12} * f^{\prime{\prime}}(u)$$
+%
+% donde: 
+%
+% $$ u \in (a,b) $$
+% 
+% En este caso el "error" está dado por: 
+%
+% $$ \frac{(b-a)h^{2}}{12} * f^{\prime{\prime}}(u) $$
+% 
+% * *REGLA COMPUESTA DE SIMPSON*
+%
+% 
+% $$   \int_{a}^{b}f(x)dx = \frac{h}{3}[f(a)+2\sum_{j=1}^{\frac{n}{2}-1}f(x_ij) +4\sum_{j=1}^{\frac{n}{2}-1}f(x_{2j-1})+f(b)] - \frac{(b-a)h^{4}}{180} * f^{(4)}(u)$$
+%
+% donde
+%
+% $$  u \in (a,b) $$
+%
+%%
+% * *Cuadratura Gaussiana* 
+%
+% 
+% <<Gau2.PNG>>
+% 
+% Las formulas anteriores aproximan la integral con las evaluaciones de la
+% funcion en determinados puntos por determinadas constantes, por lo que son
+% formulas de cuadratura.
+%
+% Asi como se utilizaba en el metodo de la regla de simpson compuesta y la 
+% regla del trapecio, los cuales utilizan polinomios de lagrange, es decir, 
+% buscar cual es el polimonio mas grande que se puede encontrar para
+% aproximarme a un grado de presicion.
+% Sin embargo en este metodo utilizaremos *polinomios de Legendre*
+%
+% Aqui podemos observar los primeros 5 polinomios de legendre y sus
+% respectivsa graficas en el intervalo de -1 a 1 
+%
+% <<Gau.png>>
+%
+% <<Gau1.png>>
+% 
+%
+% 
+% * Si Pn es un polinomio de Legendre de grado n entonces sus raices son
+% numeros reales 
+% 
+% 
+% <<Gau3.PNG>>
+% 
+%  Por lo que sabemos que 
+%
+% <<Gau4.PNG>>
+% 
+% Asi como se aplicó en simpson y en trapecio,que sabemos que tienen
+% presicion definida, como lo es el 3 en la regla de simpson y el 1 en el
+% trapecio. Es decir, que si la funcion es de grado 3 o 1 respectivamente,
+% la funcion deja de aproximarse y se convierte exactamente en la funcion,
+% sin grado de error.
+% Se aplica la misma logica con la cuadratura Gaussiana
+% 
+% <<Gau5.PNG>>
+% 
+% Sin embargo no tenemos un margen de error, por lo que se cuenta con tablas
+% con las que cuentan ya con valores predertminados con las que tenemos que
+% evaluar nuestra funcion para asi poderlas aproximar dependiendo el grado
+% de la funcion.
+% 
+% Por ultimo ya contamos con la fucion en -1 a 1, sin embargo
+% no siempre se busca ingtegrar en dicho ontervalo, por lo que haciendo un
+% cambio de variable nos arroja esta dicha formula generica. 
+%
+% 
+% <<Gau6.PNG>>
+% 
+%
+%
+
+%% Desarrollo
+%
+% A continuación, se presentan una serie de problemas de la Parte 2 del
+% Curso de Señales y Sistemas, los cuales se les da resolución mediante
+% código de MATLAB® y comprobamos con resultados obtenidos previamente. 
+%
+% * *Problema 1*
+%
+% # Para el PR04 reporte la grafica de la simulacion numerica de la
+% convolucion y compare con el resultado analitico que obtuvo para el
+% problema 1.
+%
+% Realiza la convolucion de las siguientes señales:
+% 
+% <<g1.png>>
+%
+% <<h1.png>>
+% 
+%%
+g = @(t) (1-t).*(t>=0 & t<1)+(t-1).*(t>=1&t<2); %Funcion fija
+h = @(t) (1).*(t>=0&t<1);%Funcion movil
+graficas(g,h,-1,3,-.5,1.5);
+
+%%
+% Ambas funciones se pueden visualizar en las primeras graficas que se
+% muestran despues del codigo ejecutable.
+%
+%   g = @(t) (1-t).*(t>=0 & t<1)+(t-1).*(t>=1&t<2); %Funcion Fija
+%   h = @(t) (1).*(t>=0&t<1); %Funcion movil
+%   hg = @(t) (((-(t.^2)./2)+t).*(t>=0 & t<1) + ((t.^2)-(3.*t)+(5/2)).*(t>=1 & t<2) + ((-(t.^2)/2)+(2.*t)-(3/2)).*(t>=2 & t<3));
+%   convconm(g,h,hg,-1,4,-.5,1.5)
+%
+% La variable h representa la primer funcion, mientras que la g es otra
+% funcion, estas dos funciones son las que van a realizar la convolucion,
+% mientras que la funcion hg es la solucion analitica de la convolucion
+% h(t)*g(t).
+%
+% <<A1.gif>>
+%
+% Donde la solucion analitica de la convolucion una vez hecho 
+% las integrales de cada caso son es la siguiente:
+%
+% <<hg1.png>>
+% 
+%
+% * *Problema 2*
+%
+% # Para el PR04 reporte la grafica de la simulacion numerica de la
+% convolucion y compare con el resultado analitico que obtuvo para el
+% problema 3.
+%
+% Realiza la convolucion de las siguientes señales:
+%
+% <<g2.png>>
+%
+% <<h2.png>>
+% 
+%%
+g = @(t) (t).*(t>=0 & t<1)+(1).*(t>=1&t<2); %Funcion fija
+h = @(t) (1).*(t>=1 & t<3);%Funcion movil
+graficas(g,h,-1,3.5,-.5,1.5);
+
+%%
+% Ambas funciones se pueden visualizar en las graficas anteriores.
+%
+%   g = @(t) (t).*(t>=0 & t<1)+(1).*(t>=1&t<2); %Funcion fija
+%   h = @(t) (1).*(t>=1 & t<3);%Funcion movil
+%   hg = @(t) (((t.^2)./2)-t+1/2).*(t>=1 & t<2) + (t-3/2).*(t>=2 & t<3) + ((-(t.^2)/2)+(3.*t)-3).*(t>=3 & t<4) + (-t+5).*(t>=4 & t<5);
+%   convconm(g,h,hg,-1,5.5,-.5,2)
+%
+% La variable h representa la primer funcion, mientras que la g es otra
+% funcion, estas dos funciones son las que van a realizar la convolucion,
+% mientras que la funcion hg es la solucion analitica de la convolucion
+% h(t)*g(t).
+%
+% <<A2.gif>>
+%
+% Donde la solucion analitica de la convolucion una vez resuelta
+% es la siguiente:
+%
+% <<hg2.png>>
+% 
+%
+% * *Problema 3*
+%
+% # Para el PR06 reporte la grafica de la simulacion numerica de la
+% convolucion y compare con el resultado analitico que obtuvo para el
+% problema e).
+%
+% Realiza la autocorrelacion de:
+%
+% <<x3.png>>
+%
+% Tenemos por definicion que:
+% 
+% <<Autocorrelacion3.png>>
+%
+% Por lo que las funcion $X_1(t)=g(t)$ (funcion fija) y $X_1(-t)=h(t)$ (funcion movil) quedan 
+% de la siguiente forma:d
+%
+% <<g3.png>>
+%
+% <<h3.png>>
+% 
+%%
+g = @(t) 1.*(t>=0 & t<3)-1.*(t>=3&t<4);%Funcion fija
+h = @(t) -1.*(t>=-4&t<-3)+1.*(t>=-3&t<0);%Funcion movil
+graficas(g,h,-4.5,4.5,-1.5,1.5);
+
+%%
+% Ambas funciones se pueden visualizar en las primeras graficas que se
+% muestran despues del codigo ejecutable.
+%%
+%   g = @(t) 1.*(t>=0 & t<3)-1.*(t>=3&t<4);%Funcion fija
+%   h = @(t) -1.*(t>=-4&t<-3)+1.*(t>=-3&t<0);%Funcion movil
+%   hg = @(t) (-t-4).*(t>=-4 & t<-3) + (t+2).*(t>=-3 & t<-1) + (3*t+4).*(t>=-1 & t<0) + (-3*t+4).*(t>=0 & t<1) + (-t+2).*(t>=1 & t<3) + (t-4).*(t>=3 & t<4);
+%   convconm(g,h,hg,-4.5,4.5,-1.5,4.5)
+%%
+% La variable g representa la primer funcion la cual va a ser la funcion,
+% fija mientras que la h es otra funcion, estas dos funciones son las 
+% que van a realizar la convolucion, mientras que la funcion hg es 
+% la solucion analitica de la autocorrelacion de $T_{X_1X_1}$
+%
+% <<A3.gif>>
+%
+% Donde la solucion analitica de la autocorrelacion de $X_1$, la cual es lo
+% mismo que la convolucion de g(t)*h(t). La solucion analitica quedo de la
+% siguiente forma:
+%
+% <<hg3.png>>
+% 
+%
+% * *Problema 4*
+%
+% # Para el PR06 reporte la grafica de la simulacion numerica de la
+% convolucion y compare con el resultado analitico que obtuvo para el
+% problema f).
+%
+% Realiza la correlacion de $T_{X_0X_1}$:
+%
+% <<x41.png>>
+%
+% <<x42.png>>
+%
+% Tenemos por definicion que:
+% 
+% <<Correlacion4.png>>
+%
+% Por lo que las funcion $X_0(t)=h(t)$ (funcion fija) y $X_1(t)=g(t)$ (funcion movil) quedan 
+% de la siguiente forma:d
+%
+% <<g4.png>>
+% 
+% <<h4.png>>
+%%
+g = @(t) 1.*(t>=0 & t<2)-1.*(t>=2&t<4);%Funcion fija
+h = @(t) -1.*(t>=-4&t<-3)+1.*(t>=-3&t<0);%Funcion movil
+graficas(g,h,-4.5,4.5,-1.5,1.5);
+
+%%
+% Ambas funciones se pueden visualizar en las graficas anteriores.
+%
+%%
+%   g = @(t) 1.*(t>=0 & t<2)-1.*(t>=2&t<4);%Funcion fija
+%   h = @(t) -1.*(t>=-4&t<-3)+1.*(t>=-3&t<0);%Funcion movil
+%   hg = @(t) (-t-4).*(t>=-4 & t<-3) + (t+2).*(t>=-3 & t<-2) + (3*t+6).*(t>=-2 & t<-1) + (-t+2).*(t>=-1 & t<0) + (-3*t+2).*(t>=0 & t<1) + (-t).*(t>=1 & t<2) + (t-4).*(t>=2 & t<4);
+%   convconm(g,h,hg,-4.5,4.5,-2.5,3.5)
+%%
+% La variable g representa la primer funcion, la cual va a ser la funcion
+% fija mientras que la h es la otra funcion, la cual va a ser la funcion 
+% movil, estas dos funciones son las que van a realizar la convolucion, 
+% mientras que la funcion hg es la solucion analitica de la correlacion
+% de $T_{X_0X_1}$
+%
+% <<A4.gif>>
+%
+% Donde la solucion analitica de la correlacion de $T_{X_0X_1}$, la cual es lo
+% mismo que la convolucion de g(t)*h(t). La solucion analitica quedo de la
+% siguiente forma:
+%
+% <<hg4.png>>
+% 
+%% Anexos
+% Funcion para realizar convoluciones.
+%
+% <include>convconm.m</include>
+%
+% Los parametros representan:
+%
+% * g: Es la funcion fija de la convolucion.
+% * h: Es la funcion movil de la convolucion.
+% * hx: Es el resultado analitico que se obtuvieroon previamente al
+% realizar la practica, el cual se va a graficar.
+% * p1: Es el punto limite minimo en x
+% * p2: Es el punto limite maximo en x
+% * ymin: Es el punto limite minimo en y
+% * ymax: Es el punto limite maximo en x
+%
+% Funcion para realizar graficas de las funciones con las cuales se van a
+% realizar las convoluciones.
+%
+% <include>graficas.m</include>
+%
+% * g: Es la funcion fija de la convolucion.
+% * h: Es la funcion movil de la convolucion.
+% * p1: Es el punto limte minimo en x.
+% * p2: Es el punto limite maximo en x.
+% * ymin: Es el punto limite minimo en y.
+% * ymax: Es el punto limite maximo en y.
+%
+##### SOURCE END #####
+--></body></html>
